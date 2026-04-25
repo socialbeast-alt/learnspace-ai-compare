@@ -1,31 +1,32 @@
-"use client";
-import { motion } from "framer-motion";
-import { Check, X, Star, Clock, User, Award, Trophy } from "lucide-react";
+import { Check, X, Star, User, Trophy } from "lucide-react";
 
-export default function ComparisonCard({ course, isWinner, index }: any) {
+export default function ComparisonCard({ course, isWinner }: any) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className={`glass relative p-6 rounded-2xl flex flex-col h-full ${isWinner ? "border-purple-500/50 purple-glow" : "border-white/10"}`}
-    >
-      {isWinner && <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg animate-bounce"><Trophy className="w-4 h-4" /> Top Pick</div>}
+    <div className={`card p-6 flex flex-col h-full relative ${isWinner ? "border-indigo-600 ring-2 ring-indigo-50" : ""}`}>
+      {isWinner && (
+        <div className="absolute -top-3 left-4 bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+          <Trophy className="w-3 h-3" /> Top Pick
+        </div>
+      )}
       <div className="mb-4">
-        <h3 className="text-xl font-bold text-white mb-1 line-clamp-2">{course.title}</h3>
-        <p className="text-purple-400 text-sm flex items-center gap-1"><User className="w-3 h-3" /> {course.instructor}</p>
+        <h3 className="text-lg font-bold text-gray-900 leading-tight">{course.title}</h3>
+        <p className="text-gray-500 text-sm flex items-center gap-1"><User className="w-3 h-3" /> {course.instructor}</p>
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white/5 rounded-lg p-3"><p className="text-xs text-gray-400 mb-1 font-bold">Price</p><p className="text-lg font-semibold">{course.price}</p></div>
-        <div className="bg-white/5 rounded-lg p-3"><p className="text-xs text-gray-400 mb-1 font-bold">Rating</p><p className="text-lg font-semibold text-yellow-400 flex items-center gap-1"><Star className="w-4 h-4 fill-current" /> {course.rating}</p></div>
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="bg-gray-50 p-2 rounded"><p className="text-[10px] text-gray-400 font-bold uppercase">Price</p><p className="font-bold">{course.price}</p></div>
+        <div className="bg-gray-50 p-2 rounded"><p className="text-[10px] text-gray-400 font-bold uppercase">Rating</p><p className="font-bold text-yellow-600 flex items-center gap-1"><Star className="w-3 h-3 fill-current" /> {course.rating}</p></div>
       </div>
-      <div className="flex-1">
-        <p className="text-sm font-bold mb-2 text-green-400 flex items-center gap-2"><Check className="w-4 h-4" /> Pros</p>
-        <ul className="text-xs text-gray-400 space-y-1 mb-4">{course.pros.map((p: any, i: any) => <li key={i}>• {p}</li>)}</ul>
-        <p className="text-sm font-bold mb-2 text-red-400 flex items-center gap-2"><X className="w-4 h-4" /> Cons</p>
-        <ul className="text-xs text-gray-400 space-y-1">{course.cons.map((c: any, i: any) => <li key={i}>• {c}</li>)}</ul>
+      <div className="flex-1 space-y-4">
+        <div>
+          <p className="text-xs font-bold text-green-600 flex items-center gap-1 mb-1"><Check className="w-3 h-3" /> Pros</p>
+          <ul className="text-xs text-gray-600 space-y-1">{course.pros.map((p: any, i: any) => <li key={i}>• {p}</li>)}</ul>
+        </div>
+        <div>
+          <p className="text-xs font-bold text-red-600 flex items-center gap-1 mb-1"><X className="w-3 h-3" /> Cons</p>
+          <ul className="text-xs text-gray-600 space-y-1">{course.cons.map((c: any, i: any) => <li key={i}>• {c}</li>)}</ul>
+        </div>
       </div>
-      <div className="mt-auto pt-6 border-t border-white/10"><p className="text-sm text-gray-300 italic">"{course.verdict}"</p></div>
-    </motion.div>
+      <div className="mt-6 pt-4 border-t border-gray-100"><p className="text-xs text-gray-500 italic leading-relaxed">"{course.verdict}"</p></div>
+    </div>
   );
 }
