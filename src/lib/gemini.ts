@@ -9,7 +9,7 @@ const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const geminiModel = genAI.getGenerativeModel({
-  model: "gemini-pro",
+  model: "gemini-1.5-flash",
 });
 
 /**
