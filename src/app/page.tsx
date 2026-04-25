@@ -57,14 +57,18 @@ export default function Home() {
       <section className="max-w-2xl mx-auto mb-16" aria-label="Course Input Area">
         <div className="flex flex-col md:flex-row gap-3 p-2 bg-gray-50 rounded-xl border border-gray-200 focus-within:ring-2 focus-within:ring-indigo-500">
           <label htmlFor="courseUrls" className="sr-only">Paste course URLs to compare</label>
-          <input
+          <textarea
             id="courseUrls"
-            type="text"
             value={urls}
             onChange={(e) => setUrls(e.target.value)}
-            placeholder="Paste URLs here (separated by spaces or commas)..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-gray-900 px-4 py-3"
-            onKeyDown={(e) => e.key === "Enter" && handleAnalyze()}
+            placeholder="Paste multiple course URLs here (one per line)..."
+            className="flex-1 bg-transparent border-none focus:ring-0 text-gray-900 px-4 py-3 min-h-[60px] resize-none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleAnalyze();
+              }
+            }}
             aria-invalid={!!error}
           />
           <button
