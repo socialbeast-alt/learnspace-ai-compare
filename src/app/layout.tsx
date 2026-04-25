@@ -11,9 +11,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${outfit.className} bg-[#0a0a0c] text-white antialiased`}>
-        <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-[#0a0a0c] to-[#0a0a0c]"></div>
+    <html lang="en">
+      <body className={`${outfit.className} bg-white text-gray-900 antialiased`}>
         {children}
       </body>
     </html>
