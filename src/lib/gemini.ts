@@ -1,12 +1,22 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+/**
+ * Initializes the Google Generative AI SDK.
+ * SECURITY: Uses GEMINI_API_KEY for strict server-side secrets,
+ * falling back to NEXT_PUBLIC_ for backward compatibility with current deployment.
+ */
+const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const geminiModel = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
 });
 
+/**
+ * Generates the prompt for the AI to analyze and compare courses.
+ * @param content - The extracted text content from the course URLs.
+ * @returns The formatted prompt string.
+ */
 export const analyzeCoursePrompt = (content: string) => `
 Analyze the following course information extracted from a URL and provide a structured JSON response.
 If multiple courses are provided, compare them.
