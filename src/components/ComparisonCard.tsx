@@ -8,7 +8,7 @@ export default function ComparisonCard({ course, isWinner, index }: any) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className={\`glass relative p-6 rounded-2xl flex flex-col h-full \${isWinner ? "border-purple-500/50 purple-glow" : "border-white/10"}\`}
+      className={`glass relative p-6 rounded-2xl flex flex-col h-full ${isWinner ? "border-purple-500/50 purple-glow" : "border-white/10"}`}
     >
       {isWinner && <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg animate-bounce"><Trophy className="w-4 h-4" /> Top Pick</div>}
       <div className="mb-4">
