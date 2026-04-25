@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Search, Loader2, Sparkles } from "lucide-react";
+import { Search, Loader2, Sparkles, LogIn, GitMerge } from "lucide-react";
 import ComparisonCard, { CourseData } from "@/components/ComparisonCard";
 
 interface AIResult {
@@ -10,15 +10,26 @@ interface AIResult {
 }
 
 /**
- * Main dashboard component with accessibility considerations and strict typing.
+ * Main dashboard component with LearnSpace 2.0 Auth and Matrix features.
  */
 export default function Home() {
   const [urls, setUrls] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AIResult | null>(null);
   const [error, setError] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleAuth = () => {
+    // In production, this would trigger Firebase GoogleAuthProvider
+    alert("Firebase Auth Provider would trigger here. Logging you in!");
+    setIsAuthenticated(true);
+  };
 
   const handleAnalyze = async () => {
+    if (!isAuthenticated) {
+      setError("Please sign in to run a live AI comparison.");
+      return;
+    }
     if (!urls.trim()) return;
     setLoading(true);
     setError("");
@@ -49,9 +60,20 @@ export default function Home() {
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-16">
-      <header className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold mb-4 text-gray-900 tracking-tight">LearnSpace</h1>
-        <p className="text-gray-500 text-lg">Compare courses instantly with AI intelligence.</p>
+      <header className="flex justify-between items-center mb-12">
+        <div>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">LearnSpace 2.0</h1>
+          <p className="text-gray-500 text-lg">Compare courses instantly with live AI intelligence.</p>
+        </div>
+        {!isAuthenticated ? (
+          <button onClick={handleAuth} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+            <LogIn className="w-4 h-4" /> Sign in to Google
+          </button>
+        ) : (
+          <div className="flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700">
+             Welcome back, Student
+          </div>
+        )}
       </header>
 
       <section className="max-w-2xl mx-auto mb-16" aria-label="Course Input Area">
@@ -61,7 +83,7 @@ export default function Home() {
             id="courseUrls"
             value={urls}
             onChange={(e) => setUrls(e.target.value)}
-            placeholder="Paste multiple course URLs here (one per line)..."
+            placeholder="Paste multiple live course URLs here (Udemy, Coursera, etc)..."
             className="flex-1 bg-transparent border-none focus:ring-0 text-gray-900 px-4 py-3 min-h-[60px] resize-none"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -74,7 +96,7 @@ export default function Home() {
           <button
             onClick={handleAnalyze}
             disabled={loading}
-            className="btn-primary disabled:opacity-50 flex items-center justify-center gap-2 transition-opacity"
+            className={`btn-primary flex items-center justify-center gap-2 transition-opacity ${!isAuthenticated ? "opacity-50 cursor-not-allowed" : ""}`}
             aria-label={loading ? "Analyzing courses, please wait" : "Analyze courses"}
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <><Search className="w-4 h-4" aria-hidden="true" /> Analyze</>}
@@ -84,7 +106,7 @@ export default function Home() {
         {/* Accessibility: aria-live ensures screen readers announce errors/status */}
         <div aria-live="polite" className="mt-4 text-center h-6">
           {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
-          {loading && <p className="text-indigo-600 text-sm font-medium">AI is reading the course syllabus...</p>}
+          {loading && <p className="text-indigo-600 text-sm font-medium">Scraping live URLs and running pedagogical analysis...</p>}
         </div>
       </section>
 
@@ -101,6 +123,29 @@ export default function Home() {
             {result.courses.map((course, idx) => (
               <ComparisonCard key={idx} course={course} isWinner={idx === result.overallWinnerIndex} />
             ))}
+          </div>
+
+          {/* New LearnSpace 2.0 Matrix Section */}
+          <div className="mt-12 p-8 bg-white border border-gray-200 rounded-xl shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <GitMerge className="w-5 h-5 text-indigo-600" /> Syllabus Overlap Matrix
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {result.courses.map((course, idx) => (
+                <div key={idx} className="space-y-2">
+                  <h3 className="font-bold text-gray-800">{course.title} teaches uniquely:</h3>
+                  {course.uniqueTopics && course.uniqueTopics.length > 0 ? (
+                    <ul className="list-disc pl-5 text-gray-600 text-sm space-y-1">
+                      {course.uniqueTopics.map((topic, i) => (
+                        <li key={i}>{topic}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500 italic">No highly unique topics found compared to others.</p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
