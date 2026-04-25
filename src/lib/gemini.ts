@@ -14,12 +14,14 @@ export const geminiModel = genAI.getGenerativeModel({
 
 /**
  * Generates the prompt for the AI to analyze and compare courses.
+ * LearnSpace 2.0: Deep Pedagogical Evaluation Prompt
  * @param content - The extracted text content from the course URLs.
  * @returns The formatted prompt string.
  */
 export const analyzeCoursePrompt = (content: string) => `
-Analyze the following course information extracted from a URL and provide a structured JSON response.
-If multiple courses are provided, compare them.
+You are an expert Educational Data Analyst and Career Counselor. 
+Analyze the following course information extracted from live website scraping and provide a structured JSON response.
+Evaluate them strictly on pedagogy, syllabus depth, pricing value, and pacing.
 
 Content:
 ${content}
@@ -37,7 +39,14 @@ Return ONLY a JSON object with the following structure:
       "skills": ["Skill 1", "Skill 2"],
       "pros": ["Pro 1", "Pro 2"],
       "cons": ["Con 1", "Con 2"],
-      "verdict": "Brief evaluation of quality"
+      "verdict": "Brief evaluation of quality",
+      "vibeBadges": ["Tag1", "Tag2", "Tag3"],
+      "outdatedWarning": {
+        "isOutdated": false,
+        "message": "Warning message if reviews complain about outdated content, or empty string"
+      },
+      "uniqueTopics": ["Topic 1 that ONLY this course teaches", "Topic 2"],
+      "timeToValue": "Description of when the first practical project is built or key milestone is reached"
     }
   ],
   "comparisonSummary": "If multiple courses, summarize which is best for what purpose. If one course, give a final recommendation.",
