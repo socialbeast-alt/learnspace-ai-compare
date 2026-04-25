@@ -13,6 +13,8 @@
     "@google-cloud/firestore": "^7.7.0",
     "@google-cloud/storage": "^7.11.0",
     "@google/generative-ai": "^0.24.1",
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
     "clsx": "^2.1.1",
     "firebase": "^10.11.1",
     "firebase-admin": "^12.1.0",
