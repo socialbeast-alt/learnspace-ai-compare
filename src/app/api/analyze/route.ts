@@ -16,25 +16,25 @@ export async function POST(req: Request) {
 
     const contents = await Promise.all(urls.map(async (url: string) => {
       if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        return `URL: ${url} (Invalid format)`;
+        return "URL: " + url + " (Invalid format)";
       }
       try {
         const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" } });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) throw new Error("HTTP " + response.status);
         const text = await response.text();
         const titleMatch = text.match(/<title>(.*?)<\/title>/);
         const title = titleMatch ? titleMatch[1] : "Unknown Title";
-        return `URL: ${url}\nTitle: ${title}\nPreview: ${text.substring(0, 1000)}`;
+        return "URL: " + url + "\\nTitle: " + title + "\\nPreview: " + text.substring(0, 1000);
       } catch (err: unknown) { 
-        return `URL: ${url} (Fetch failed: ${err instanceof Error ? err.message : 'Unknown error'})`; 
+        return "URL: " + url + " (Fetch failed: " + (err instanceof Error ? err.message : "Unknown error") + ")"; 
       }
     }));
 
     let jsonResponse;
     try {
-      const result = await geminiModel.generateContent(analyzeCoursePrompt(contents.join("\n\n")));
+      const result = await geminiModel.generateContent(analyzeCoursePrompt(contents.join("\\n\\n")));
       const textResponse = result.response.text();
-      const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
+      const jsonMatch = textResponse.match(/\\{[\\s\\S]*\\}/);
       
       if (!jsonMatch) {
         throw new Error("AI failed to generate a valid response format.");
@@ -48,8 +48,8 @@ export async function POST(req: Request) {
       jsonResponse = {
         courses: urls.map((url: string, idx: number) => {
           const content = contents[idx] || "";
-          const titleLine = content.split('\\n').find(line => line.startsWith('Title: '));
-          const parsedTitle = titleLine ? titleLine.replace('Title: ', '') : \`Course Analysis \${idx + 1}\`;
+          const titleLine = content.split("\\n").find(line => line.startsWith("Title: "));
+          const parsedTitle = titleLine ? titleLine.replace("Title: ", "") : "Course Analysis " + (idx + 1);
           
           return {
             title: parsedTitle,
