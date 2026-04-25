@@ -12,7 +12,7 @@ Analyze the following course information extracted from a URL and provide a stru
 If multiple courses are provided, compare them.
 
 Content:
-\${content}
+${content}
 
 Return ONLY a JSON object with the following structure:
 {
@@ -33,4 +33,4 @@ Return ONLY a JSON object with the following structure:
   "comparisonSummary": "If multiple courses, summarize which is best for what purpose. If one course, give a final recommendation.",
   "overallWinnerIndex": 0
 }
-\`;
+`;
